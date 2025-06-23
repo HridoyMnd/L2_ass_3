@@ -7,13 +7,13 @@ const addBook = async (req: Request, res: Response) => {
     const data = await Book.create(req.body);
 
     // response send here
-    res.send({
+    res.status(201).send({
       success: true,
       message: "Book created successfully",
       data,
     });
   } catch (error) {
-    res.send({
+  res.status(500).send({
       message: "Validation failed",
       success: false,
       error,
@@ -27,13 +27,13 @@ const allBooks = async (req: Request, res: Response) => {
     const all_books = await Book.find();
 
     //response send here
-    res.send({
+    res.status(201).send({
       success: true,
       message: "Books retrieved successfully",
       all_books,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       message: "Books retrieved failed",
       success: false,
       error,
@@ -64,13 +64,13 @@ if (filter && typeof filter === 'string') {
       .limit(limit_number);
 
     //response sending here
-    res.send({
+    res.status(201).send({
       success: true,
       message: "Books retrieved successfully",
       data,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       message: "Books retrieved  failed",
       success: false,
       error,
@@ -91,13 +91,13 @@ const single_book = async (req: Request, res: Response) =>  {
     }
     
     // response sending  here
-    res.send({
+    res.status(201).send({
       success: true,
       message: "Books retrieved successfully",
       data,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       message: "Books retrived failed",
       success: false,
       error,
@@ -115,13 +115,13 @@ const update_book = async (req: Request, res: Response) => {
     });
 
     //response sending here
-    res.send({
+    res.status(201).send({
       success: true,
       message: "Book updated successfully",
       data,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       message: "Book updated failed",
       success: false,
       error,
@@ -136,13 +136,13 @@ const delete_book = async (req: Request, res: Response) => {
     await Book.findByIdAndDelete(book_id);
 
     //response sending here
-    res.send({
+    res.status(201).send({
       success: true,
       message: "Book deleted successfully",
       data: null,
     });
   } catch (error) {
-    res.send({
+    res.status(500).send({
       message: "Book deleted failed",
       success: false,
       error,

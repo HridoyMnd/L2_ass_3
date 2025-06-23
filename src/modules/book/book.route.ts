@@ -8,7 +8,7 @@ const bookRoute = Router();
 bookRoute.post("/api/books", BookController.addBook);
 bookRoute.get("/api/books", BookController.allBooks);
 bookRoute.get("/genre/books", BookController.filterWithGenre);
-bookRoute.get("/sng_book/books/:bookId", BookController.single_book);
+bookRoute.get("/api/books/:bookId", BookController.single_book);
 bookRoute.put("/api/books/:bookId", BookController.update_book);
 bookRoute.delete("/api/books/:bookId", BookController.delete_book);
 

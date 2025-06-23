@@ -16,14 +16,14 @@ const addBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = yield book_model_1.Book.create(req.body);
         // response send here
-        res.send({
+        res.status(201).send({
             success: true,
             message: "Book created successfully",
             data,
         });
     }
     catch (error) {
-        res.send({
+        res.status(500).send({
             message: "Validation failed",
             success: false,
             error,
@@ -35,14 +35,14 @@ const allBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const all_books = yield book_model_1.Book.find();
         //response send here
-        res.send({
+        res.status(201).send({
             success: true,
             message: "Books retrieved successfully",
             all_books,
         });
     }
     catch (error) {
-        res.send({
+        res.status(500).send({
             message: "Books retrieved failed",
             success: false,
             error,
@@ -65,14 +65,14 @@ const filterWithGenre = (req, res) => __awaiter(void 0, void 0, void 0, function
             .sort({ [sortBy]: sortOrder })
             .limit(limit_number);
         //response sending here
-        res.send({
+        res.status(201).send({
             success: true,
             message: "Books retrieved successfully",
             data,
         });
     }
     catch (error) {
-        res.send({
+        res.status(500).send({
             message: "Books retrieved  failed",
             success: false,
             error,
@@ -91,14 +91,14 @@ const single_book = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             });
         }
         // response sending  here
-        res.send({
+        res.status(201).send({
             success: true,
             message: "Books retrieved successfully",
             data,
         });
     }
     catch (error) {
-        res.send({
+        res.status(500).send({
             message: "Books retrived failed",
             success: false,
             error,
@@ -114,14 +114,14 @@ const update_book = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             new: true,
         });
         //response sending here
-        res.send({
+        res.status(201).send({
             success: true,
             message: "Book updated successfully",
             data,
         });
     }
     catch (error) {
-        res.send({
+        res.status(500).send({
             message: "Book updated failed",
             success: false,
             error,
@@ -134,14 +134,14 @@ const delete_book = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const book_id = req.params.bookId;
         yield book_model_1.Book.findByIdAndDelete(book_id);
         //response sending here
-        res.send({
+        res.status(201).send({
             success: true,
             message: "Book deleted successfully",
             data: null,
         });
     }
     catch (error) {
-        res.send({
+        res.status(500).send({
             message: "Book deleted failed",
             success: false,
             error,

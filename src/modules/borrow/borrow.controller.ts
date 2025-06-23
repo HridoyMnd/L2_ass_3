@@ -1,5 +1,4 @@
 import { Book } from "../book/book.model";
-// import { Borrow } from "./borrow.model";
 import { Request, Response } from "express";
 import { Borrow } from "./borrow.model";
 
@@ -12,26 +11,25 @@ const addBorrow = async (req: Request, res: Response) => {
 
     const foundBook = await Book.findById(book_id);
 
-    // if (!foundBook) {
-    //   return res.status(404).json({ message: "Book not found" });
-    // }
-
     if (!foundBook) {
-      console.log("I am her");
+      res.status(500).json({
+        success: false,
+        message: "Book not found",
+      });
     }
     foundBook?.borrowBooks(quantity);
 
     const borrowData = await Borrow.create(borrow_info);
     // response send here
-    res.send({
+    res.status(201).send({
       success: true,
       message: "Book borrowed successfully",
       data: borrowData,
     });
   } catch (error) {
-    res.send({
-      message: "Validation failed",
+    res.status(500).json({
       success: false,
+      message: "Book borrowed Failed",
       error,
     });
   }

@@ -19,25 +19,25 @@ const addBorrow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { quantity } = borrow_info;
         const book_id = borrow_info.book;
         const foundBook = yield book_model_1.Book.findById(book_id);
-        // if (!foundBook) {
-        //   return res.status(404).json({ message: "Book not found" });
-        // }
         if (!foundBook) {
-            console.log("I am her");
+            res.status(500).json({
+                success: false,
+                message: "Book not found",
+            });
         }
         foundBook === null || foundBook === void 0 ? void 0 : foundBook.borrowBooks(quantity);
         const borrowData = yield borrow_model_1.Borrow.create(borrow_info);
         // response send here
-        res.send({
+        res.status(201).send({
             success: true,
             message: "Book borrowed successfully",
             data: borrowData,
         });
     }
     catch (error) {
-        res.send({
-            message: "Validation failed",
+        res.status(500).json({
             success: false,
+            message: "Book borrowed Failed",
             error,
         });
     }
