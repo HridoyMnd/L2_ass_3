@@ -5,19 +5,19 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
     plugins: { js },
     extends: ["js/recommended"],
   },
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts}"],
+    ignores: ["dist/**", "node_modules/**"],
+    files: ["**/*.ts"],
     languageOptions: { globals: globals.node },
     rules: {
       "no-unused-vars": "warn",
-      "semi":["warn", "always"],
-      "eqeqeq": ["error", "always"],
+      semi: ["warn", "always"],
+      eqeqeq: ["error", "always"],
       "no-console": "off",
-      "no-var": "error"
+      "no-var": "error",
     },
   },
   tseslint.configs.recommended,
