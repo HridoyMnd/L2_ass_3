@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { borrowController } from "./borrow.controller";
+import { addBorrow } from "./borrow.controller";
+// import { borrowController } from "./borrow.controller";
 
 const borrowRoute = Router();
 
 
-borrowRoute.post("/api/borrow", borrowController.addBorrow);
-borrowRoute.get("/api/borrow", borrowController.all_borrow_book);
+borrowRoute.post("/api/borrow", addBorrow);
+// borrowRoute.get("/api/borrow", );
 
 
 //export borrow route

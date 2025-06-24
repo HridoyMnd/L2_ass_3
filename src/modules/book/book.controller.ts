@@ -5,7 +5,6 @@ import { Book } from "./book.model";
 const addBook = async (req: Request, res: Response) => {
   try {
     const data = await Book.create(req.body);
-
     // response send here
     res.status(201).send({
       success: true,
@@ -13,7 +12,7 @@ const addBook = async (req: Request, res: Response) => {
       data,
     });
   } catch (error) {
-  res.status(500).send({
+    res.status(500).send({
       message: "Validation failed",
       success: false,
       error,
@@ -24,13 +23,13 @@ const addBook = async (req: Request, res: Response) => {
 //get all books
 const allBooks = async (req: Request, res: Response) => {
   try {
-    const all_books = await Book.find();
+    const data = await Book.find();
 
     //response send here
     res.status(201).send({
       success: true,
       message: "Books retrieved successfully",
-      all_books,
+      data,
     });
   } catch (error) {
     res.status(500).send({
@@ -44,24 +43,22 @@ const allBooks = async (req: Request, res: Response) => {
 // filter with genre and get books
 const filterWithGenre = async (req: Request, res: Response) => {
   try {
-    const {
-      filter,
-      sortBy = "createdAt",
-      sort = "asc",
-      limit = "10",
-    } = req.query;
+    const { filter, sortBy = "createdAt", sort = "asc", lmt = 10 } = req.query;
 
-    // Filter by genre
-const query: Record<string, string | undefined> = {};
-if (filter && typeof filter === 'string') {
-  query.genre = filter;
-}
-    // Convert limit and sort properly
-    const limit_number = parseInt(limit as string);
-    const sortOrder = sort === "desc" ? -1 : 1;
-    const data = await Book.find(query)
-      .sort({ [sortBy as string]: sortOrder })
-      .limit(limit_number);
+    const sortOrder = sort === "asc" ? 1 : -1;
+    const limitNumber = parseInt(lmt as string);
+
+    const data = await Book.find({ genre: filter })
+      .sort({ [sortBy as string]: sortOrder }) 
+      .limit(limitNumber);
+    if (data.length === 0) {
+      res.status(500).send({
+        message: "Books retrieved  failed",
+        success: false,
+        error: `${filter} is not matched in database`,
+      });
+      return;
+    }
 
     //response sending here
     res.status(201).send({
@@ -79,17 +76,11 @@ if (filter && typeof filter === 'string') {
 };
 
 //get single book with bookId
-const single_book = async (req: Request, res: Response) =>  {
+const single_book = async (req: Request, res: Response) => {
   try {
     const book_id = req.params.bookId;
     const data = await Book.findById(book_id);
-    if(!data){
-       res.status(404).json({
-        success:"failed",
-        message: `Cannot find any book with ${book_id}`
-      });
-    }
-    
+
     // response sending  here
     res.status(201).send({
       success: true,

@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { Borrow } from "./borrow.model";
 
 // add a book
-const addBorrow = async (req: Request, res: Response) => {
+export const addBorrow = async (req: Request, res: Response) => {
   try {
     const borrow_info = req.body;
     const { quantity } = borrow_info;
@@ -12,7 +12,7 @@ const addBorrow = async (req: Request, res: Response) => {
     const foundBook = await Book.findById(book_id);
 
     if (!foundBook) {
-      res.status(500).json({
+       res.status(500).json({
         success: false,
         message: "Book not found",
       });
@@ -36,7 +36,7 @@ const addBorrow = async (req: Request, res: Response) => {
 };
 
 //get all borrowed book
-const all_borrow_book = async (req: Request, res: Response) => {
+export const all_borrow_book = async (req: Request, res: Response) => {
   try {
     const summary = await Borrow.aggregate([
       {
@@ -84,8 +84,8 @@ const all_borrow_book = async (req: Request, res: Response) => {
   }
 };
 
-//export borroController
-export const borrowController = {
-  addBorrow,
-  all_borrow_book,
-};
+// //export borroController
+// export const borrowController = {
+//   addBorrow,
+//   all_borrow_book,
+// };

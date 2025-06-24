@@ -14,11 +14,11 @@ enum Genre {
 //book schema create
 const bookSchema = new Schema<IBook>(
   {
-    title: { type: String, required: [true, 'Title is required'] },
-    author: { type: String, required: [true, "Author is required"] },
-    genre: { type: String, enum: Object.values(Genre), required: true },
+    title: { type: String, required: [true, 'Title is required'], trim:true },
+    author: { type: String, required: [true, "Author is required"], trim: true },
+    genre: { type: String, enum: Object.values(Genre), required: true, trim:true },
     isbn: { type: String, required: [true, "ISBN number is required"], unique: [true, "ISBN number is not unique"] },
-    description: { type: String },
+    description: { type: String, trim:true },
     copies: { type: Number, required: [true, "copies number is required"], min: [0, "Copies must be a positive number"] },
     available: { type: Boolean, default: true },
   },
