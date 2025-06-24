@@ -7,23 +7,29 @@
 - #### Filter and search books by genre, author, or title
 - #### MongoDB Aggregation pipeline for reporting
 - #### Structured codebase with controllers, services, routes, and models
+- #### post middleware used
 - #### Error handling and validation
 
 ### Tech Stack
 
 - #### Node.js
 - #### Express.js
-- #### TypeScript
+- #### TypeScript 
 - #### MongoDB + Mongoose
 
 ### Installation & Setup
 
     > Step 1: Clone the repository
      https://github.com/HridoyMnd/L2_ass_3
+
     > Install dependencies
+
     > create a .env file and setup
+
     PORT=3000
     MONGODB_URI=mongodb uri den ekhane
+
     >npm run build
+
     >npm run dev
 
