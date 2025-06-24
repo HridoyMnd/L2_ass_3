@@ -33,12 +33,12 @@ const addBook = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 //get all books
 const allBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const all_books = yield book_model_1.Book.find();
+        const data = yield book_model_1.Book.find();
         //response send here
         res.status(201).send({
             success: true,
             message: "Books retrieved successfully",
-            all_books,
+            data,
         });
     }
     catch (error) {
@@ -52,18 +52,20 @@ const allBooks = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 // filter with genre and get books
 const filterWithGenre = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { filter, sortBy = "createdAt", sort = "asc", limit = "10", } = req.query;
-        // Filter by genre
-        const query = {};
-        if (filter && typeof filter === 'string') {
-            query.genre = filter;
-        }
-        // Convert limit and sort properly
-        const limit_number = parseInt(limit);
-        const sortOrder = sort === "desc" ? -1 : 1;
-        const data = yield book_model_1.Book.find(query)
+        const { filter, sortBy = "createdAt", sort = "asc", limit = 10 } = req.query;
+        const sortOrder = sort === "asc" ? 1 : -1;
+        const limitNumber = parseInt(limit);
+        const data = yield book_model_1.Book.find({ genre: filter })
             .sort({ [sortBy]: sortOrder })
-            .limit(limit_number);
+            .limit(limitNumber);
+        if (data.length === 0) {
+            res.status(500).send({
+                message: "Books retrieved  failed",
+                success: false,
+                error: `${filter} is not matched in database`,
+            });
+            return;
+        }
         //response sending here
         res.status(201).send({
             success: true,
@@ -84,12 +86,6 @@ const single_book = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     try {
         const book_id = req.params.bookId;
         const data = yield book_model_1.Book.findById(book_id);
-        if (!data) {
-            res.status(404).json({
-                success: "failed",
-                message: `Cannot find any book with ${book_id}`
-            });
-        }
         // response sending  here
         res.status(201).send({
             success: true,

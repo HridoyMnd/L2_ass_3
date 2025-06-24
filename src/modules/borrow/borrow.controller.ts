@@ -8,18 +8,29 @@ export const addBorrow = async (req: Request, res: Response) => {
     const borrow_info = req.body;
     const { quantity } = borrow_info;
     const book_id = borrow_info.book;
-
     const foundBook = await Book.findById(book_id);
 
     if (!foundBook) {
-       res.status(500).json({
+      res.status(500).json({
         success: false,
-        message: "Book not found",
+        message: `Book not found with ${book_id}`,
       });
+      return;
     }
-    foundBook?.borrowBooks(quantity);
+
+    try {
+      await foundBook?.borrowBooks(quantity);
+    } catch (error) {
+      res.status(400).json({
+        success:false,
+        message: "Book borrow failed",
+        err: `${error}`
+      });
+      return;
+    }
 
     const borrowData = await Borrow.create(borrow_info);
+
     // response send here
     res.status(201).send({
       success: true,
@@ -83,9 +94,3 @@ export const all_borrow_book = async (req: Request, res: Response) => {
     });
   }
 };
-
-// //export borroController
-// export const borrowController = {
-//   addBorrow,
-//   all_borrow_book,
-// };

@@ -43,10 +43,10 @@ const allBooks = async (req: Request, res: Response) => {
 // filter with genre and get books
 const filterWithGenre = async (req: Request, res: Response) => {
   try {
-    const { filter, sortBy = "createdAt", sort = "asc", lmt = 10 } = req.query;
+    const { filter, sortBy = "createdAt", sort = "asc", limit = 10 } = req.query;
 
     const sortOrder = sort === "asc" ? 1 : -1;
-    const limitNumber = parseInt(lmt as string);
+    const limitNumber = parseInt(limit as string);
 
     const data = await Book.find({ genre: filter })
       .sort({ [sortBy as string]: sortOrder }) 

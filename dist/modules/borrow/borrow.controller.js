@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.borrowController = void 0;
+exports.all_borrow_book = exports.addBorrow = void 0;
 const book_model_1 = require("../book/book.model");
 const borrow_model_1 = require("./borrow.model");
 // add a book
@@ -22,10 +22,21 @@ const addBorrow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!foundBook) {
             res.status(500).json({
                 success: false,
-                message: "Book not found",
+                message: `Book not found with ${book_id}`,
             });
+            return;
         }
-        foundBook === null || foundBook === void 0 ? void 0 : foundBook.borrowBooks(quantity);
+        try {
+            yield (foundBook === null || foundBook === void 0 ? void 0 : foundBook.borrowBooks(quantity));
+        }
+        catch (error) {
+            res.status(400).json({
+                success: false,
+                message: "Book borrow failed",
+                err: `${error}`
+            });
+            return;
+        }
         const borrowData = yield borrow_model_1.Borrow.create(borrow_info);
         // response send here
         res.status(201).send({
@@ -42,6 +53,7 @@ const addBorrow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
 });
+exports.addBorrow = addBorrow;
 //get all borrowed book
 const all_borrow_book = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -88,8 +100,4 @@ const all_borrow_book = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
 });
-//export borroController
-exports.borrowController = {
-    addBorrow,
-    all_borrow_book,
-};
+exports.all_borrow_book = all_borrow_book;
