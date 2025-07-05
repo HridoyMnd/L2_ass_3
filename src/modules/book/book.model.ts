@@ -1,8 +1,6 @@
 import { model, Schema } from "mongoose";
 import { BookModel, IBook } from "./book.interface";
 import { Borrow } from "../borrow/borrow.model";
-// import { Borrow } from "../borrow/borrow.model";
-// import { borrowSchema } from "../borrow/borrow.model";
 
 // book Genre create here
 enum Genre {
@@ -52,7 +50,6 @@ const bookSchema = new Schema<IBook>(
 bookSchema.methods.borrowBooks = async function (
   quantity: number
 ): Promise<void> {
-  // console.log(quantity);
   if (this.copies < quantity) {
       throw new Error("Not have enough copies");
   }
@@ -64,9 +61,6 @@ bookSchema.methods.borrowBooks = async function (
   }
 
   await this.save();
-
-
-
 
 };
 

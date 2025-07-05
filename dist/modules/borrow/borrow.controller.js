@@ -10,19 +10,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.all_borrow_book = exports.addBorrow = void 0;
-const book_model_1 = require("../book/book.model");
 const borrow_model_1 = require("./borrow.model");
+const book_model_1 = require("../book/book.model");
 // add a book
 const addBorrow = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
+        const bookId = req.params.bookId;
         const borrow_info = req.body;
-        const { quantity } = borrow_info;
-        const book_id = borrow_info.book;
-        const foundBook = yield book_model_1.Book.findById(book_id);
+        const { quantity } = req.body;
+        const foundBook = yield book_model_1.Book.findById(bookId);
         if (!foundBook) {
             res.status(500).json({
                 success: false,
-                message: `Book not found with ${book_id}`,
+                message: `Book not found with ${bookId}`,
             });
             return;
         }
@@ -69,18 +69,18 @@ const all_borrow_book = (req, res) => __awaiter(void 0, void 0, void 0, function
                     from: "books",
                     localField: "_id",
                     foreignField: "_id",
-                    as: "book",
-                },
+                    as: "bookRecord"
+                }
             },
             {
-                $unwind: "$book",
+                $unwind: "$bookRecord",
             },
             {
                 $project: {
                     _id: 0,
                     book: {
-                        title: "$book.title",
-                        isbn: "$book.isbn",
+                        title: "$bookRecord.title",
+                        isbn: "$bookRecord.isbn",
                     },
                     totalQuantity: 1,
                 },

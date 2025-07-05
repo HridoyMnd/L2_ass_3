@@ -9,6 +9,12 @@ async function server() {
 
     console.log(`server connnected with mongodb`);
 
+
+    // test 
+    app.get("/", (req, res) => {
+      res.send("Hello world");
+    });
+
     //listening example
     app.listen(config.port, () => {
       console.log(`Example app listening on port ${config.port}`);

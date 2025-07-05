@@ -1,19 +1,20 @@
-import { Book } from "../book/book.model";
+
 import { Request, Response } from "express";
 import { Borrow } from "./borrow.model";
+import { Book } from "../book/book.model";
 
 // add a book
 export const addBorrow = async (req: Request, res: Response) => {
   try {
+    const bookId = req.params.bookId;
     const borrow_info = req.body;
-    const { quantity } = borrow_info;
-    const book_id = borrow_info.book;
-    const foundBook = await Book.findById(book_id);
+    const { quantity } = req.body;
+    const foundBook = await Book.findById(bookId);
 
     if (!foundBook) {
       res.status(500).json({
         success: false,
-        message: `Book not found with ${book_id}`,
+        message: `Book not found with ${bookId}`,
       });
       return;
     }
@@ -28,7 +29,6 @@ export const addBorrow = async (req: Request, res: Response) => {
       });
       return;
     }
-
     const borrowData = await Borrow.create(borrow_info);
 
     // response send here
@@ -48,6 +48,7 @@ export const addBorrow = async (req: Request, res: Response) => {
 
 //get all borrowed book
 export const all_borrow_book = async (req: Request, res: Response) => {
+
   try {
     const summary = await Borrow.aggregate([
       {
@@ -56,25 +57,25 @@ export const all_borrow_book = async (req: Request, res: Response) => {
           totalQuantity: { $sum: "$quantity" },
         },
       },
-      {
-        $lookup: {
-          from: "books",
-          localField: "_id",
-          foreignField: "_id",
-          as: "book",
-        },
-      },
+  {
+    $lookup: {
+      from: "books",
+      localField: "_id",
+      foreignField: "_id",
+      as: "bookRecord"
+    }
+  },
 
       {
-        $unwind: "$book",
+        $unwind: "$bookRecord",
       },
 
       {
         $project: {
           _id: 0,
           book: {
-            title: "$book.title",
-            isbn: "$book.isbn",
+            title: "$bookRecord.title",
+            isbn: "$bookRecord.isbn",
           },
           totalQuantity: 1,
         },

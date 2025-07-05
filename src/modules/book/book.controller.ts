@@ -3,9 +3,9 @@ import { Book } from "./book.model";
 
 // add a book
 const addBook = async (req: Request, res: Response) => {
+
   try {
     const data = await Book.create(req.body);
-    // response send here
     res.status(201).send({
       success: true,
       message: "Book created successfully",
@@ -24,11 +24,9 @@ const addBook = async (req: Request, res: Response) => {
 const allBooks = async (req: Request, res: Response) => {
   try {
     const data = await Book.find();
-
-    //response send here
-    res.status(201).send({
+    res.status(201).send({ 
       success: true,
-      message: "Books retrieved successfully",
+       message: "Books retrieved successfully",
       data,
     });
   } catch (error) {
@@ -40,45 +38,10 @@ const allBooks = async (req: Request, res: Response) => {
   }
 };
 
-// filter with genre and get books
-const filterWithGenre = async (req: Request, res: Response) => {
-  try {
-    const { filter, sortBy = "createdAt", sort = "asc", limit = 10 } = req.query;
-
-    const sortOrder = sort === "asc" ? 1 : -1;
-    const limitNumber = parseInt(limit as string);
-
-    const data = await Book.find({ genre: filter })
-      .sort({ [sortBy as string]: sortOrder }) 
-      .limit(limitNumber);
-    if (data.length === 0) {
-      res.status(500).send({
-        message: "Books retrieved  failed",
-        success: false,
-        error: `${filter} is not matched in database`,
-      });
-      return;
-    }
-
-    //response sending here
-    res.status(201).send({
-      success: true,
-      message: "Books retrieved successfully",
-      data,
-    });
-  } catch (error) {
-    res.status(500).send({
-      message: "Books retrieved  failed",
-      success: false,
-      error,
-    });
-  }
-};
-
 //get single book with bookId
 const single_book = async (req: Request, res: Response) => {
   try {
-    const book_id = req.params.bookId;
+    const book_id = req.params.id;
     const data = await Book.findById(book_id);
 
     // response sending  here
@@ -99,7 +62,7 @@ const single_book = async (req: Request, res: Response) => {
 //update a book
 const update_book = async (req: Request, res: Response) => {
   try {
-    const book_id = req.params.bookId;
+    const book_id = req.params.id;
     const updated_data = req.body;
     const data = await Book.findByIdAndUpdate(book_id, updated_data, {
       new: true,
@@ -141,12 +104,48 @@ const delete_book = async (req: Request, res: Response) => {
   }
 };
 
+
+// filter with genre and get books
+// const filterWithGenre = async (req: Request, res: Response) => {
+//   try {
+//     const { filter, sortBy = "createdAt", sort = "asc", limit = 10 } = req.query;
+
+//     const sortOrder = sort === "asc" ? 1 : -1;
+//     const limitNumber = parseInt(limit as string);
+
+//     const data = await Book.find({ genre: filter })
+//       .sort({ [sortBy as string]: sortOrder }) 
+//       .limit(limitNumber);
+//     if (data.length === 0) {
+//       res.status(500).send({
+//         message: "Books retrieved  failed",
+//         success: false,
+//         error: `${filter} is not matched in database`,
+//       });
+//       return;
+//     }
+
+//     res.status(201).send({
+//       success: true,
+//       message: "Books retrieved successfully",
+//       data,
+//     });
+//   } catch (error) {
+//     res.status(500).send({
+//       message: "Books retrieved  failed",
+//       success: false,
+//       error,
+//     });
+//   }
+// };
+
+
 // all method export here
 export const BookController = {
   addBook,
   allBooks,
   single_book,
-  filterWithGenre,
+  // filterWithGenre,
   update_book,
   delete_book,
 };

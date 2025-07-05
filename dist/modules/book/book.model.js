@@ -12,8 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Book = void 0;
 const mongoose_1 = require("mongoose");
 const borrow_model_1 = require("../borrow/borrow.model");
-// import { Borrow } from "../borrow/borrow.model";
-// import { borrowSchema } from "../borrow/borrow.model";
 // book Genre create here
 var Genre;
 (function (Genre) {
@@ -57,7 +55,6 @@ const bookSchema = new mongoose_1.Schema({
 //instance method for borrow book
 bookSchema.methods.borrowBooks = function (quantity) {
     return __awaiter(this, void 0, void 0, function* () {
-        // console.log(quantity);
         if (this.copies < quantity) {
             throw new Error("Not have enough copies");
         }

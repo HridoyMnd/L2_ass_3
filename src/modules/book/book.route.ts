@@ -5,13 +5,13 @@ import { BookController } from "./book.controller";
 const bookRoute = Router();
 
 // book post endpoint
-bookRoute.post("/api/books", BookController.addBook);
-bookRoute.get("/api/books", BookController.allBooks);
-bookRoute.get("/genre/books", BookController.filterWithGenre);
-bookRoute.get("/api/books/:bookId", BookController.single_book);
-bookRoute.put("/api/books/:bookId", BookController.update_book);
+bookRoute.post("/create-book", BookController.addBook);
+bookRoute.get("/books", BookController.allBooks);
+bookRoute.get("/books/:id", BookController.single_book);
+bookRoute.put("/edit-book/:id", BookController.update_book);
 bookRoute.delete("/api/books/:bookId", BookController.delete_book);
 
+// bookRoute.get("/genre/books", BookController.filterWithGenre);
 
 //exported here
 export default bookRoute;
