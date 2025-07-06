@@ -38,6 +38,27 @@ const allBooks = async (req: Request, res: Response) => {
   }
 };
 
+//latest data
+const latestBooks = async (req: Request, res: Response) => {
+  try {
+    const data = await Book.find()
+      .sort({ createdAt: -1 })
+      .limit(8);
+
+    res.status(200).send({
+      success: true,
+      message: "Latest books retrieved successfully",
+      data,
+    });
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Failed to retrieve latest books",
+      error,
+    });
+  }
+};
+
 //get single book with bookId
 const single_book = async (req: Request, res: Response) => {
   try {
@@ -144,6 +165,7 @@ const delete_book = async (req: Request, res: Response) => {
 export const BookController = {
   addBook,
   allBooks,
+  latestBooks,
   single_book,
   // filterWithGenre,
   update_book,
